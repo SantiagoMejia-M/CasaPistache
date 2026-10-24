@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Navaja Negra Barbería</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Big+Shoulders+Display:wght@700;800;900&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: cartel de barbería. Franja de poste diagonal como único gesto atrevido, resto sobrio. */
+:root{
+  --bg:#f1f3f4; --surface:#ffffff; --fg:#10202e; --muted:#566574; --line:#d3d9de;
+  --red:#c62f2a; --blue:#1d4b86; --on-accent:#ffffff; --ink:#10202e; --ink-fg:#f1f3f4;
+  --display:'Big Shoulders Display','Arial Narrow',Impact,sans-serif;
+  --body:'Archivo',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0c1822; --surface:#132635; --fg:#eef1f3; --muted:#9aabb9; --line:#25394a;
+  --red:#e0524c; --blue:#6b9be0; --on-accent:#0c1822; --ink:#050c12; --ink-fg:#eef1f3; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0c1822; --surface:#132635; --fg:#eef1f3; --muted:#9aabb9; --line:#25394a;
+  --red:#e0524c; --blue:#6b9be0; --on-accent:#0c1822; --ink:#050c12; --ink-fg:#eef1f3; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0}
+.wrap{max-width:1040px;margin:0 auto}
+a{color:inherit}
+h1,h2,h3{font-family:var(--display);text-transform:uppercase;line-height:.95;margin:0;text-wrap:balance;letter-spacing:.01em}
+.label{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+
+.demo{font-size:13px;color:var(--muted);padding:10px 0;border-bottom:1px solid var(--line)}
+.demo b{color:var(--fg)}
+
+header.top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 0;flex-wrap:wrap}
+.brand{font-family:var(--display);font-weight:900;font-size:26px;text-transform:uppercase;letter-spacing:.03em}
+.brand span{color:var(--red)}
+nav{display:flex;gap:20px;font-size:14px;font-weight:500}
+nav a{text-decoration:none;color:var(--muted)}
+nav a:hover{color:var(--fg)}
+
+.hero{display:grid;grid-template-columns:1.2fr .8fr;gap:32px;align-items:end;padding:36px 0 44px}
+.hero h1{font-size:clamp(56px,11vw,128px);font-weight:900}
+.hero h1 em{font-style:normal;color:var(--red)}
+.hero p{max-width:46ch;color:var(--muted);font-size:18px;margin:20px 0 28px}
+.btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;font:600 15px var(--body);padding:14px 22px;border:2px solid var(--fg);background:var(--fg);color:var(--bg);text-decoration:none;cursor:pointer;border-radius:2px}
+.btn.alt{background:transparent;color:var(--fg)}
+.btn.wa{background:var(--red);border-color:var(--red);color:var(--on-accent)}
+.btn:hover{filter:brightness(1.08)}
+.pole{height:100%;min-height:260px;border:2px solid var(--fg);border-radius:2px;
+  background:repeating-linear-gradient(-45deg,var(--red) 0 22px,var(--surface) 22px 44px,var(--blue) 44px 66px,var(--surface) 66px 88px);position:relative}
+.pole .tag{position:absolute;left:-2px;bottom:-2px;background:var(--fg);color:var(--bg);padding:10px 14px;font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase}
+.status{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--muted)}
+.status.open .dot{background:#2f9e5b}
+
+section{padding:44px 0;border-top:1px solid var(--line)}
+section>h2{font-size:clamp(36px,6vw,60px);margin:8px 0 28px}
+
+.prices{display:grid;grid-template-columns:1fr 1fr;gap:0 48px}
+.row{display:flex;align-items:baseline;gap:12px;padding:16px 0;border-bottom:1px solid var(--line)}
+.row .n{font-weight:600;font-size:18px}
+.row .d{display:block;font-size:14px;color:var(--muted);font-weight:400}
+.row .fill{flex:1;border-bottom:2px dotted var(--line);transform:translateY(-4px);min-width:12px}
+.row .p{font-family:var(--mono);font-size:18px;white-space:nowrap}
+.row .t{font-family:var(--mono);font-size:12px;color:var(--muted);white-space:nowrap}
+
+.team{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);padding:22px;border-radius:2px;min-width:0}
+.card .ini{width:56px;height:56px;display:grid;place-items:center;background:var(--ink);color:var(--ink-fg);font-family:var(--display);font-size:28px;font-weight:800;margin-bottom:16px}
+.card h3{font-size:28px;margin-bottom:4px}
+.card p{margin:8px 0 0;color:var(--muted);font-size:14px}
+
+.book{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.book fieldset{border:0;padding:0;margin:0 0 20px;min-width:0}
+.book legend{padding:0;margin-bottom:10px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips input{position:absolute;opacity:0;pointer-events:none}
+.chips label{padding:9px 14px;border:1.5px solid var(--line);background:var(--surface);cursor:pointer;font-size:14px;font-weight:500;border-radius:2px}
+.chips input:checked+label{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.chips input:focus-visible+label{outline:3px solid var(--blue);outline-offset:2px}
+.preview{background:var(--ink);color:var(--ink-fg);padding:24px;border-radius:2px;align-self:start;min-width:0}
+.preview .label{color:#9aabb9}
+.preview pre{white-space:pre-wrap;word-break:break-word;font:15px/1.6 var(--body);margin:14px 0 20px}
+.preview .btns .btn{border-color:var(--ink-fg)}
+.preview .btn.alt{color:var(--ink-fg)}
+.hint{font-size:13px;color:#9aabb9;margin-top:14px}
+
+.info{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.hours{width:100%;border-collapse:collapse;font-size:16px}
+.hours td{padding:11px 0;border-bottom:1px solid var(--line)}
+.hours td:last-child{text-align:right;font-family:var(--mono);font-size:15px}
+.hours tr.today td{font-weight:600;color:var(--red)}
+.addr{font-size:20px;font-weight:500;margin:0 0 6px}
+.copy{margin-top:16px}
+
+footer{border-top:2px solid var(--fg);padding:24px 0 40px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+
+@media (max-width:760px){
+  .hero,.book,.info,.prices{grid-template-columns:1fr}
+  .team{grid-template-columns:1fr}
+  .pole{min-height:140px}
+  nav{display:none}
+}
+/* tira de servicios */
+.ticker{overflow:hidden;background:var(--fg);color:var(--bg);margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:14px 0;border-block:2px solid var(--fg)}
+.ticker-track{display:flex;width:max-content}
+.ticker-track span{font-family:var(--display);font-weight:800;font-size:26px;text-transform:uppercase;letter-spacing:.06em;padding-right:28px;white-space:nowrap}
+.ticker-track span i{font-style:normal;color:var(--red);padding-left:28px}
+/* cifras */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding:36px 0 8px}
+.stat b{display:block;font-family:var(--display);font-weight:900;font-size:clamp(44px,8vw,80px);line-height:1;font-variant-numeric:tabular-nums}
+.stat b em{font-style:normal;color:var(--red)}
+/* tijeras */
+.scissors{width:34px;height:34px;vertical-align:-8px;margin-right:6px;color:var(--red);overflow:visible}
+.scissors .b1,.scissors .b2{transform-origin:16px 16px}
+.pole .tag{display:flex;align-items:center;gap:8px}
+
+@media (prefers-reduced-motion:no-preference){
+  .btn{transition:filter .15s,transform .15s}
+  .btn:hover{transform:translateY(-2px)}
+  .btn:active{transform:translateY(1px)}
+  .btn.wa{animation:pulseRing 2.6s ease-out infinite}
+  @keyframes pulseRing{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--red) 55%,transparent)}70%,100%{box-shadow:0 0 0 14px transparent}}
+  /* poste girando */
+  .pole{background-size:124.45px 124.45px;animation:spin 3.2s linear infinite}
+  @keyframes spin{to{background-position:124.45px 0}}
+  /* entrada del hero */
+  .rise{animation:rise .8s cubic-bezier(.2,.7,.2,1) backwards}
+  .rise.d1{animation-delay:.08s}.rise.d2{animation-delay:.18s}.rise.d3{animation-delay:.3s}.rise.d4{animation-delay:.42s}
+  @keyframes rise{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+  .hero h1 em{display:inline-block;animation:bump 3.6s ease-in-out 1.2s infinite}
+  @keyframes bump{0%,86%,100%{transform:none}92%{transform:translateY(-6px) rotate(-1.5deg)}}
+  /* ticker */
+  .ticker-track{animation:marquee 26s linear infinite}
+  .ticker:hover .ticker-track{animation-play-state:paused}
+  @keyframes marquee{to{transform:translateX(-50%)}}
+  /* estado abierto */
+  .status.open .dot{animation:blip 1.8s ease-out infinite}
+  @keyframes blip{0%{box-shadow:0 0 0 0 rgba(47,158,91,.7)}100%{box-shadow:0 0 0 10px rgba(47,158,91,0)}}
+  /* aparición al bajar: solo movimiento, el texto siempre es visible */
+  .reveal{transform:translateY(26px);transition:transform .7s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{transform:none}
+  .team .card.reveal:nth-child(2){transition-delay:.1s}.team .card.reveal:nth-child(3){transition-delay:.2s}
+  /* hover vivos */
+  .card{transition:transform .25s,box-shadow .25s,border-color .25s}
+  .card:hover{transform:translateY(-6px);box-shadow:0 14px 28px -14px rgba(0,0,0,.35);border-color:var(--red)}
+  .card:hover .ini{animation:wob .5s ease}
+  @keyframes wob{30%{transform:rotate(-8deg) scale(1.08)}60%{transform:rotate(6deg)}100%{transform:none}}
+  .row{transition:padding-left .2s,background .2s}
+  .row:hover{padding-left:12px;background:color-mix(in srgb,var(--red) 7%,transparent)}
+  .row:hover .p{color:var(--red)}
+  .row .fill{background:linear-gradient(90deg,var(--red) 0 0) 0 100%/0 2px no-repeat;transition:background-size .5s}
+  .row:hover .fill{background-size:100% 2px}
+  .chips label{transition:transform .15s,background .15s,color .15s}
+  .chips label:hover{transform:translateY(-2px)}
+  .chips input:checked+label{animation:pop .3s ease}
+  @keyframes pop{50%{transform:scale(1.08)}}
+  #msg.flash{animation:flash .45s ease}
+  @keyframes flash{from{opacity:.2;transform:translateX(-6px)}to{opacity:1;transform:none}}
+  /* tijeras cortando */
+  .scissors .b1{animation:snip1 1.6s ease-in-out infinite}
+  .scissors .b2{animation:snip2 1.6s ease-in-out infinite}
+  @keyframes snip1{0%,100%{transform:rotate(0)}40%{transform:rotate(-16deg)}55%{transform:rotate(-2deg)}}
+  @keyframes snip2{0%,100%{transform:rotate(0)}40%{transform:rotate(16deg)}55%{transform:rotate(2deg)}}
+}
+@media (max-width:760px){.stats{grid-template-columns:1fr 1fr 1fr}.stat .label{font-size:10px}}
+</style>
+
+<style>:root{color-scheme:light}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="demo"><b>Página de muestra.</b> Navaja Negra es una barbería ficticia, hecha para enseñar cómo quedaría una web para un negocio real.</div>
+
+  <header class="top">
+    <div class="brand"><svg class="scissors" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><g class="b1"><path d="M16 16 L28 4"/><circle cx="7" cy="25" r="4"/></g><g class="b2"><path d="M16 16 L28 28"/><circle cx="7" cy="7" r="4"/></g></svg>Navaja <span>Negra</span></div>
+    <nav><a href="#servicios">Servicios</a><a href="#equipo">Barberos</a><a href="#reservar">Reservar</a><a href="#visita">Horario</a></nav>
+  </header>
+
+  <div class="hero">
+    <div>
+      <div class="status rise" id="status"><span class="dot"></span><span id="statusText">Revisando horario</span></div>
+      <h1 class="rise d1">Corte limpio.<br><em>Sin esperar.</em></h1>
+      <p class="rise d2">Cortes clásicos, degradados y barba con toalla caliente. Reservas por WhatsApp en menos de un minuto y te atendemos a la hora que elegiste.</p>
+      <div class="btns rise d3">
+        <a class="btn wa" href="#reservar">Reservar mi cita</a>
+        <a class="btn alt" href="#servicios">Ver precios</a>
+      </div>
+    </div>
+    <div class="pole rise d4" role="img" aria-label="Franjas de poste de barbería"><span class="tag">Desde 2014 · Cita o sin cita</span></div>
+  </div>
+
+  <div class="ticker" aria-hidden="true"><div class="ticker-track">
+    <span>Corte clásico<i>/</i></span><span>Degradado<i>/</i></span><span>Barba con toalla caliente<i>/</i></span><span>Corte + barba<i>/</i></span><span>Corte infantil<i>/</i></span><span>Cejas y contornos<i>/</i></span>
+    <span>Corte clásico<i>/</i></span><span>Degradado<i>/</i></span><span>Barba con toalla caliente<i>/</i></span><span>Corte + barba<i>/</i></span><span>Corte infantil<i>/</i></span><span>Cejas y contornos<i>/</i></span>
+  </div></div>
+
+  <div class="stats reveal">
+    <div class="stat"><b><span data-count="12000">12,000</span><em>+</em></b><div class="label">Cortes hechos</div></div>
+    <div class="stat"><b><span data-count="10">10</span><em>+</em></b><div class="label">Años abiertos</div></div>
+    <div class="stat"><b><span data-count="48">48</span><em>★</em></b><div class="label">Clientes que repiten (%)</div></div>
+  </div>
+
+  <section id="servicios">
+    <div class="label">Lista de precios</div>
+    <h2>Servicios</h2>
+    <div class="prices">
+      <div>
+        <div class="row"><div><span class="n">Corte clásico</span><span class="d">Tijera y máquina, lavado incluido</span></div><span class="fill"></span><span class="p">$150</span><span class="t">30 min</span></div>
+        <div class="row"><div><span class="n">Degradado</span><span class="d">Fade a navaja, a tu medida</span></div><span class="fill"></span><span class="p">$180</span><span class="t">40 min</span></div>
+        <div class="row"><div><span class="n">Corte infantil</span><span class="d">Menores de 12 años</span></div><span class="fill"></span><span class="p">$120</span><span class="t">25 min</span></div>
+      </div>
+      <div>
+        <div class="row"><div><span class="n">Barba con toalla caliente</span><span class="d">Perfilado y aceite</span></div><span class="fill"></span><span class="p">$100</span><span class="t">20 min</span></div>
+        <div class="row"><div><span class="n">Corte + barba</span><span class="d">El combo más pedido</span></div><span class="fill"></span><span class="p">$240</span><span class="t">55 min</span></div>
+        <div class="row"><div><span class="n">Cejas y contornos</span><span class="d">Con navaja, rápido</span></div><span class="fill"></span><span class="p">$50</span><span class="t">10 min</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="equipo">
+    <div class="label">Quién te atiende</div>
+    <h2>Barberos</h2>
+    <div class="team">
+      <div class="card"><div class="ini">R</div><h3>Rafa</h3><div class="label">Degradados</div><p>Doce años con la máquina. Si traes foto de referencia, te lo deja igual.</p></div>
+      <div class="card"><div class="ini">M</div><h3>Memo</h3><div class="label">Clásicos y barba</div><p>Especialista en navaja y toalla caliente. Corte de oficina que dura.</p></div>
+      <div class="card"><div class="ini">D</div><h3>Dani</h3><div class="label">Niños y jóvenes</div><p>Paciente con los más chicos y al día con los estilos que se usan ahora.</p></div>
+    </div>
+  </section>
+
+  <section id="reservar">
+    <div class="label">Reserva en un minuto</div>
+    <h2>Arma tu cita</h2>
+    <div class="book">
+      <form id="form" onsubmit="return false">
+        <fieldset><legend class="label">1. Servicio</legend>
+          <div class="chips" id="g-serv"></div></fieldset>
+        <fieldset><legend class="label">2. Barbero</legend>
+          <div class="chips" id="g-barb"></div></fieldset>
+        <fieldset><legend class="label">3. Día</legend>
+          <div class="chips" id="g-dia"></div></fieldset>
+        <fieldset><legend class="label">4. Hora</legend>
+          <div class="chips" id="g-hora"></div></fieldset>
+      </form>
+      <div class="preview">
+        <div class="label">Mensaje que se enviará</div>
+        <pre id="msg"></pre>
+        <div class="btns">
+          <a class="btn wa" id="wa" href="#" target="_blank" rel="noopener">Enviar por WhatsApp</a>
+          <button class="btn alt" id="copy" type="button">Copiar mensaje</button>
+        </div>
+        <div class="hint" id="hint">Se abre WhatsApp con el mensaje listo. Solo lo envías.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="visita">
+    <div class="label">Pasa a vernos</div>
+    <h2>Horario y ubicación</h2>
+    <div class="info">
+      <table class="hours" id="hours"></table>
+      <div>
+        <p class="addr">Av. Principal 123, Centro<br>Ciudad Ejemplo</p>
+        <p style="color:var(--muted);margin:0">A media cuadra de la plaza. Hay estacionamiento en la calle.</p>
+        <p class="addr" style="margin-top:24px">WhatsApp: <span style="font-family:var(--mono)">+52 000 000 0000</span></p>
+        <button class="btn alt copy" id="copyNum" type="button">Copiar número</button>
+      </div>
+    </div>
+  </section>
+
+  <footer><span>© Navaja Negra Barbería · Página de muestra</span><span>Av. Principal 123, Centro</span></footer>
+</div>
+
+<script>
+(function(){
+  var NUM='520000000000';
+  var SERV=['Corte clásico','Degradado','Corte infantil','Barba con toalla caliente','Corte + barba','Cejas y contornos'];
+  var BARB=['Cualquiera','Rafa','Memo','Dani'];
+  var HRS=[['Lunes a viernes','10:00 – 20:00'],['Sábado','10:00 – 19:00'],['Domingo','11:00 – 16:00']];
+  var HORAS=['10:00','11:30','13:00','16:00','17:30','19:00'];
+  var DN=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+  var state={serv:SERV[4],barb:BARB[0],dia:null,hora:HORAS[3]};
+
+  function chips(id,name,items,key){
+    var el=document.getElementById(id);
+    el.innerHTML=items.map(function(it,i){
+      var v=typeof it==='string'?it:it.v, t=typeof it==='string'?it:it.t;
+      var uid=name+i;
+      return '<span><input type="radio" name="'+name+'" id="'+uid+'" value="'+v+'"'+(state[key]===v?' checked':'')+'><label for="'+uid+'">'+t+'</label></span>';
+    }).join('');
+    el.addEventListener('change',function(e){state[key]=e.target.value;render()});
+  }
+
+  var days=[], now=new Date();
+  for(var i=0;i<4;i++){
+    var d=new Date(now.getFullYear(),now.getMonth(),now.getDate()+i);
+    var lab=i===0?'Hoy':i===1?'Mañana':DN[d.getDay()]+' '+d.getDate();
+    lab=lab.charAt(0).toUpperCase()+lab.slice(1);
+    days.push({v:(i===0?'hoy':i===1?'mañana':'el '+DN[d.getDay()]+' '+d.getDate()),t:lab});
+  }
+  state.dia=days[1].v;
+
+  chips('g-serv','serv',SERV,'serv');
+  chips('g-barb','barb',BARB,'barb');
+  chips('g-dia','dia',days,'dia');
+  chips('g-hora','hora',HORAS,'hora');
+
+  function text(){
+    return 'Hola, quiero reservar en Navaja Negra:\n• Servicio: '+state.serv+'\n• Barbero: '+state.barb+'\n• Día: '+state.dia+'\n• Hora: '+state.hora+'\n\n¿Está disponible?';
+  }
+  function render(){
+    var t=text();
+    var m=document.getElementById('msg');
+    m.textContent=t;
+    m.classList.remove('flash');void m.offsetWidth;m.classList.add('flash');
+    document.getElementById('wa').href='https://wa.me/'+NUM+'?text='+encodeURIComponent(t);
+  }
+  render();
+
+  function copy(str,btn,ok){
+    var done=function(){var o=btn.textContent;btn.textContent=ok;setTimeout(function(){btn.textContent=o},1600)};
+    try{navigator.clipboard.writeText(str).then(done,function(){})}catch(e){}
+  }
+  document.getElementById('copy').addEventListener('click',function(){copy(text(),this,'Copiado')});
+  document.getElementById('copyNum').addEventListener('click',function(){copy('+52 000 000 0000',this,'Copiado')});
+
+  /* horario y estado abierto */
+  function slot(d){return d===0?[11,16]:d===6?[10,19]:[10,20]}
+  var today=now.getDay(), hr=now.getHours()+now.getMinutes()/60, s=slot(today);
+  var open=hr>=s[0]&&hr<s[1];
+  var st=document.getElementById('status');
+  st.className='status'+(open?' open':'');
+  document.getElementById('statusText').textContent=open?'Abierto ahora · cierra a las '+s[1]+':00':'Cerrado ahora · abrimos '+(hr<s[0]?'hoy':'pronto')+' a las '+(hr<s[0]?s[0]:10)+':00';
+  var rows=HRS.map(function(r,i){
+    var isT=(i===0&&today>=1&&today<=5)||(i===1&&today===6)||(i===2&&today===0);
+    return '<tr'+(isT?' class="today"':'')+'><td>'+r[0]+(isT?' (hoy)':'')+'</td><td>'+r[1]+'</td></tr>';
+  }).join('');
+  document.getElementById('hours').innerHTML=rows;
+
+  /* animaciones al bajar */
+  var still=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var targets=document.querySelectorAll('section>h2,.card,.row,.book>*,.info>*,.stats');
+  targets.forEach(function(el){el.classList.add('reveal')});
+  function countUp(el){
+    var end=+el.getAttribute('data-count'),t0=null,fmt=function(n){return n>=1000?n.toLocaleString('en-US'):''+n};
+    if(still)return;
+    function step(ts){t0=t0||ts;var p=Math.min((ts-t0)/1300,1),e=1-Math.pow(1-p,3);el.textContent=fmt(Math.round(end*e));if(p<1)requestAnimationFrame(step)}
+    requestAnimationFrame(step);
+  }
+  if('IntersectionObserver' in window&&!still){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){
+      if(e.isIntersecting){e.target.classList.add('in');
+        e.target.querySelectorAll('[data-count]').forEach(countUp);io.unobserve(e.target)}
+    })},{threshold:.15});
+    targets.forEach(function(el){io.observe(el)});
+  }else{targets.forEach(function(el){el.classList.add('in')})}
+})();
+</script>
+</body>
+</html>
